@@ -30,6 +30,12 @@
 import Footer from './components/Footer'
 import Home from './components/Home'
 import { eventBus } from './main'
+import axios from 'axios'
+import VueCookies from 'vue-cookies'
+const config = require('../config')
+const isProduction = process.env.NODE_ENV === 'production'
+const backendServer = (isProduction ? config.build.backend : config.dev.backend)
+
 export default {
 	data () {
 		return {
@@ -40,17 +46,23 @@ export default {
 		'app-footer': Footer
 	},
 	created () {
-		'App'
+		if (VueCookies.get('token') && VueCookies.get('userID')) {
+      this.$store.state.auth.token = VueCookies.get('token')
+      this.$store.state.auth.userID = VueCookies.get('userID')
+      this.$store.state.auth.username = VueCookies.get('username')
+      this.$store.state.auth.role = VueCookies.get('role')
+      axios.get(backendServer + '/isTokenActive/')
+    }
 	}
 }
 </script>
-
 <style>
 #gameContent {
   border-radius: 30px;
   border: 3px solid #7ce5f8;
   width: 1000px;
   height: auto;
+	min-height: 350px
 }
 #appFooter {
   font-size: 13px;

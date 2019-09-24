@@ -36,14 +36,14 @@ module.exports = {
 	'1': {
 		'situationText': 'The client’s skin has now been prepped and properly draped.  You are ready to administer the anesthesia.  Your assistant hands you the needle and vial.  You…',
 		'choices': [{
-			'choiceText': 'A. You take the appropriate amount of anesthetic into the needle and inject at the site of the twin dorsal nerves',
+			'choiceText': 'A. Take the appropriate amount of anesthetic into the needle and inject at the site of the twin dorsal nerves',
 			'comment': '',
 			'correct': 'no',
 			'impact': 0,
 			'bonus': 0
 		},
 		{
-			'choiceText': 'B. You check the vial of anesthetic to ensure the correct agent at the correct concentration has been selected.',
+			'choiceText': 'B. Check the vial of anesthetic to ensure the correct agent at the correct concentration has been selected.',
 			'comment': '',
 			'correct': 'no',
 			'impact': 0,
@@ -65,82 +65,47 @@ module.exports = {
 		'prevMove': 0
 	},
 	'2': {
-		'situationText': 'The penile nerve block with required anesthesia to be injected at two positions. Click on both appropriate areas in the diagram provided. Note: The player will see a diagram of the penis and will need to manipulate the picture of a hand holding the needle and click on the two correct areas before proceeding to next step. (See diagram A below)',
+		'situationText': 'The penile nerve block with required anesthesia to be injected at two positions. Click on both appropriate areas in the diagram provided.',
 		'choices': [{
-			'choiceText': 'A. Click on dorsal penile nerves at 1 o’clock and 11 o’clock positions',
-			'comment': '',
-			'correct': 'yes',
-			'impact': 1,
-			'bonus': 0
-		},
-		{
-			'choiceText': 'B. Click on other positions on penis',
+			'choiceText': 'B. Pause procedure',
 			'comment': '',
 			'correct': 'no',
 			'impact': 0,
 			'bonus': 0
-		},
-		{
-			'choiceText': 'C. Pause procedure',
-			'comment': '',
-			'correct': 'yes',
-			'choices': [{
-				'choiceText': 'Why? In this diagram the picture of the hand holding the needle is not gloved.  Extra bonus points for noticing this error! Player will be asked to select the correct positions with a gloved hand on the screen.',
-				'correct': 'yes',
-				'impact': 1,
-				'bonus': 1
-			},
-			{
-				'choiceText': 'Why? Diagram does not show the correct anatomy.',
-				'correct': 'no',
-				'impact': 0,
-				'bonus': 0
-			}]
 		}
 		],
 		'nextMove': 3,
 		'prevMove': 1
 	},
 	'3': {
-		'situationText': 'To ensure maximum achievement of anesthetic effect during MC procedure, you also perform a ring block.  With your fine (23-gauge) needle, click on the locations on the diagram where you would inject.',
+		'situationText': 'Place each item in the correct colored bin',
 		'choices': [{
-			'choiceText': 'A. Click on other positions on penis',
-			'comment': '',
-			'correct': 'no',
-			'impact': 0,
-			'bonus': 0
-		},
-		{
-			'choiceText': 'B. Click on the correct subcutaneous locations, forming a ring around the penis',
+			'choiceText':'Blue/black bin: gloves, disposable forceps, expired medication',
 			'comment': '',
 			'correct': 'yes',
 			'impact': 1,
-			'bonus': 0
+			'bonus': 1
 		},
 		{
-			'choiceText': 'C. Pause procedure',
+			'choiceText': 'Red bin: blood, pathogenic waste',
 			'comment': '',
 			'correct': 'yes',
-			'choices': [{
-				'choiceText': 'Why?  If the player did not notice the hand holding the needle is not gloved in the previous question, they will have another chance to point out the error.',
-				'correct': 'yes',
-				'impact': 1,
-				'bonus': 0
-			},
-			{
-				'choiceText': 'Why? Incorrect instrument.',
-				'correct': 'no',
-				'impact': 0,
-				'bonus': 0
-			}
-			]
+			'impact': 1,
+			'bonus': 1
+		},
+		{
+			'choiceText': 'Yellow bin: needles, sharps, broken ampules',
+			'comment': '',
+			'correct': 'yes',
+			'impact': 1,
+			'bonus': 1
 		}
 		],
 		'nextMove': 4,
 		'prevMove': 2
 	},
 	'4': {
-		'situationText': 'The patient weighs 40 kg. How much lidocaine at 2% anesthetic did you use?',
+		'situationText': 'Despite injecting the anesthetic, the patient continues to show signs of discomfort and pain. Review the actions below and select the box for best practice.       The patient weighs 40 kg. How much lidocaine at 2% anesthetic did you use?',
 		'choices': [{
 			'choiceText': 'A. 0.9 ml',
 			'comment': '',
@@ -176,14 +141,14 @@ module.exports = {
 	'5': {
 		'situationText': 'How many minutes after injection do you wait before beginning the procedure?',
 		'choices': [{
-			'choiceText': 'A. 3 minutes',
+			'choiceText': 'A. 3-5 minutes',
 			'comment': '',
 			'correct': 'yes',
 			'impact': 1,
 			'bonus': 0
 		},
 		{
-			'choiceText': 'B. 5 minutes',
+			'choiceText': 'B. 6 minutes',
 			'comment': '',
 			'correct': 'no',
 			'impact': 0,
@@ -237,75 +202,24 @@ module.exports = {
 	'7': {
 		'situationText': 'Click on the foreskin the two locations where you would place the artery forceps to provide sufficient tension on the inside and outside surfaces of the foreskin.',
 		'choices': [{
-			'choiceText': 'A. On the 3 and 9 o’clock positions around the foreskin',
-			'comment': '',
-			'correct': 'yes',
-			'impact': 1,
-			'bonus': 0
-		},
-		{
-			'choiceText': 'B. Anywhere else on the foreskin',
+			'choiceText': 'B. Pause procedure',
 			'comment': '',
 			'correct': 'no',
 			'impact': 0,
 			'bonus': 0
-		},
-		{
-			'choiceText': 'C. Pause procedure',
-			'comment': '',
-			'correct': 'no',
-			'choices': [
-				{
-					'choiceText': 'Why? Incorrect instruments.',
-					'correct': 'no',
-					'impact': 0,
-					'bonus': 0
-				},
-				{
-					'choiceText': 'Why? Incorrect anatomy shown.',
-					'correct': 'no',
-					'impact': 0,
-					'bonus': 0
-				}
-			]
 		}
 		],
 		'nextMove': 8,
 		'prevMove': 6
 	},
 	'8': {
-		'situationText': 'Now that the foreskin is tight, crush with the scalpel where the first incision should be.',
+		'situationText': 'Now that the foreskin is tight, where should the scalpel crush the skin?',
 		'choices': [{
-			'choiceText': 'A. Cut the dorsal slit in the 12 o’clock position',
-			'comment': '',
-			'correct': 'no',
-			'impact': 0,
-			'bonus': 0
-		},
-		{
-			'choiceText': 'B. Cut anywhere else on the penis',
-			'comment': '',
-			'correct': 'no',
-			'impact': 0,
-			'bonus': 0
-		},
-		{
-			'choiceText': 'C. Pause procedure',
+			'choiceText': 'B. Pause procedure',
 			'comment': '',
 			'correct': 'yes',
-			'choices': [{
-				'choiceText': 'Why? Incorrect instrument; use Long artery forceps to crush.',
-				'correct': 'yes',
-				'impact': 1,
-				'bonus': 0
-			},
-			{
-				'choiceText': 'Why? Incorrect anatomy shown.',
-				'correct': 'no',
-				'impact': 0,
-				'bonus': 0
-			}
-			]
+			'impact': 1,
+			'bonus': 0
 		}
 		],
 		'nextMove': 9,
@@ -409,7 +323,7 @@ module.exports = {
 			'bonus': 0
 		},
 		{
-			'choiceText': 'C. Midline skin raphe (A common error is to misalign the frenulum and the midline skin raphe, which results in misalignment of the whole circumcision closure.)',
+			'choiceText': 'C. Midline skin raphe',
 			'comment': '',
 			'correct': 'yes',
 			'impact': 1,
@@ -443,7 +357,34 @@ module.exports = {
 			'bonus': 0
 		}
 		],
-		'nextMove': null,
+		'nextMove': 14,
 		'prevMove': 12
+	},
+	'14': {
+		'situationText': 'After the procedure is ended, blood-soiled linen should be… ',
+		'choices': [{
+			'choiceText': 'A. Cleaned to remove blood by using clean water before decontamination',
+			'comment': '',
+			'correct': 'no',
+			'impact': 0,
+			'bonus': 0
+		},
+		{
+			'choiceText': 'B. Cleaned with soap water to remove blood before decontamination using 0.5% Chlorine',
+			'comment': '',
+			'correct': 'no',
+			'impact': 0,
+			'bonus': 0
+		},
+		{
+			'choiceText': 'C. Decontaminated before cleaning',
+			'comment': '',
+			'correct': 'yes',
+			'impact': 1,
+			'bonus': 0
+		}
+		],
+		'nextMove': null,
+		'prevMove': 13
 	}
 }
