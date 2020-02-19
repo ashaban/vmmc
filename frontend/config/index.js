@@ -19,7 +19,7 @@ module.exports = {
     errorOverlay: true,
     notifyOnErrors: true,
     poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
-    backend: 'http://localhost:3000',
+    backend: 'http://localhost:8081',
     // Use Eslint Loader?
     // If true, your code will be linted during bundling and
     // linting errors and warnings will be shown in the console.
@@ -52,7 +52,7 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '',
 
-    backend: 'http://52.18.125.4:8081/nkiNode',
+    backend: 'http://172.104.46.60:8081',
     /**
      * Source Maps
      */

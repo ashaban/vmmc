@@ -7,8 +7,7 @@
 						Comment
 					</v-toolbar-title>
 				</v-toolbar>
-				<v-card-text>
-					{{comment}}
+				<v-card-text v-html="comment">
 				</v-card-text>
 				<v-card-actions>
 					<v-btn color="primary" @click.native="commentDialog = false">Ok</v-btn>
@@ -21,15 +20,35 @@
         You have Completed Module 1
       </p>
     </v-alert>
+		<v-dialog
+			v-model="moduleCompleted"
+			persistent
+			max-width="500px"
+			transition="dialog-transition"
+		>
+			<v-card>
+				<v-toolbar color="success" dark>
+					<v-toolbar-title>
+						Congratulations!!!
+					</v-toolbar-title>
+				</v-toolbar>
+				<v-card-text>
+					You have completed module 1 of the game
+				</v-card-text>
+				<v-card-actions>
+					<v-btn color="success" @click.native="moduleCompleted = false">Ok</v-btn>
+				</v-card-actions>
+			</v-card>
+		</v-dialog>
 		<template>
 			<v-layout column>
 				<v-flex>
 					<v-toolbar color="#566573">
 						<v-layout row wrap>
 							<v-flex xs4 text-sm-left style="color:white">
-								<b>MALE CIRCUMCISION CHALLENGE</b>
+							  <b>TOHARA BANGUA BONGO</b>
 							</v-flex>
-							<v-spacer></v-spacer>
+              <v-spacer></v-spacer>
 							<v-flex xs1 text-sm-right style="color:white">
 								<b>MODULE 1</b>
 							</v-flex>
@@ -39,9 +58,14 @@
 				<v-flex id="question" v-show='loadingNextClient'>
 					{{client | formatClient}} Coming Now<v-progress-linear v-model="waitingPercent" color="primary" class="mb-0"></v-progress-linear>
 				</v-flex>
+				<v-flex xs4>
+					<div class="clientImg">
+						<v-img :aspect-ratio="16/9" :src="getImgUrl()" v-bind:alt="client" max-height="450" height="200"></v-img>
+					</div>
+				</v-flex>
 				<v-flex id="question" height="1" v-show='!loadingNextClient' text-sm-left>
 					<b>{{client | formatClient}}</b>
-					<v-card class="scroll" height="200">
+					<v-card class="scroll" height="300">
 						<v-card-text>
 							<v-layout column>
 								<v-flex>
@@ -100,16 +124,16 @@
         <v-toolbar color="primary">
           <v-layout row wrap>
             <v-flex xs3 style="color: white" text-sm-left v-if="clientsStatus.clientA === 'done'">
-              Client A: <label class='clientMoodStatus'>{{$store.state.mod1ClientsMood.clientA}}</label>
+              Amani: <label class='clientMoodStatus'>{{clientsMood.clientA}}</label>
             </v-flex>
             <v-flex xs3 style="color: white" text-xs-center v-if="clientsStatus.clientB === 'done'">
-              Client B: <label class='clientMoodStatus'>{{$store.state.mod1ClientsMood.clientB}}</label>
+              Zabron: <label class='clientMoodStatus'>{{clientsMood.clientB}}</label>
             </v-flex>
             <v-flex xs3 style="color: white" text-sm-right v-if="clientsStatus.clientC === 'done'">
-              Client C: <label class='clientMoodStatus'>{{$store.state.mod1ClientsMood.clientC}}</label>
+              Anold: <label class='clientMoodStatus'>{{clientsMood.clientC}}</label>
             </v-flex>
             <v-flex xs3 style="position: absolute; right: 0; bottom: 10px">
-              <v-btn to='/'><v-icon left>home</v-icon>Home</v-btn>
+							<v-btn round color="error" to='/'><v-icon left>cancel</v-icon>Exit Game</v-btn>
             </v-flex>
           </v-layout>
         </v-toolbar>
@@ -120,10 +144,17 @@
 
 <script>
 import { eventBus } from '../../main'
+import axios from 'axios'
+import { uuid } from 'vue-uuid'
 let module1 = require('../questions/module1.js')
+const config = require('../../../config')
+const isProduction = process.env.NODE_ENV === 'production'
+const backendServer = (isProduction ? config.build.backend : config.dev.backend)
 export default {
 	data () {
 		return {
+			moduleCompleted: false,
+			sessionID: '',
 			question: '',
 			comment: '',
 			commentDialog: false,
@@ -141,10 +172,20 @@ export default {
 				clientB: {},
 				clientC: {}
 			},
+			clientsMood: {
+				clientA: null,
+				clientB: null,
+				clientC: null
+			},
 			clientsStatus: {
 				clientA: 'pending',
 				clientB: 'pending',
 				clientC: 'pending'
+			},
+			clientsImg: {
+				clientA: 'Mod1_client-A',
+				clientB: 'Mod1_client-B',
+				clientC: 'Mod1_client-C'
 			},
 			loadingNextClient: false,
 			waitingPercent: 0,
@@ -156,20 +197,34 @@ export default {
 	filters: {
 		formatClient (client) {
 			if (!client) {
-				return client
+				return client;
 			}
-			let cltArr = client.split('client')
+
+      switch (client) {
+        case "clientA":
+          return "Amani";
+
+        case "clientB":
+          return "Zabron";
+
+        case "clientC":
+          return "Anold";
+      }
+
+			let cltArr = client.split('client');
+
 			if (cltArr.length === 2) {
-				return 'Client ' + cltArr[1]
+				return 'Client ' + cltArr[1];
 			}
-			return client
+
+			return client;
 		}
 	},
 	methods: {
 		choiceSelected (event, index) {
 			// ensure that an answer is not changed
 			if (this.selectedAnswers[this.client].hasOwnProperty([this.questionNumber - 1])) {
-				index = this.selectedAnswers[this.client][this.questionNumber - 1]
+				index = this.selectedAnswers[this.client][this.questionNumber - 1].answer
 			}
 			this.selectedChoice = this.choices[index]
 			this.selectedIndex = index
@@ -201,19 +256,19 @@ export default {
 				this.mood = this.moods[moodIndex]
 			}
 			if (this.mood === 'satisfied') {
-				this.$store.state.mod1ClientsMood[this.client] = 'Satisfied'
+				this.clientsMood[this.client] = 'Satisfied'
 				this.moodClass = 'meter_arrow_satisfied'
 			} else if (this.mood === 'interested') {
-				this.$store.state.mod1ClientsMood[this.client] = 'Interested'
+				this.clientsMood[this.client] = 'Interested'
 				this.moodClass = 'meter_arrow_interested'
 			} else if (this.mood === 'neutral') {
-				this.$store.state.mod1ClientsMood[this.client] = 'Neutral'
+				this.clientsMood[this.client] = 'Neutral'
 				this.moodClass = 'meter_arrow_neutral'
 			} else if (this.mood === 'unsure') {
-				this.$store.state.mod1ClientsMood[this.client] = 'Unsure'
+				this.clientsMood[this.client] = 'Unsure'
 				this.moodClass = 'meter_arrow_unsure'
 			} else if (this.mood === 'unhappy') {
-				this.$store.state.mod1ClientsMood[this.client] = 'Unhappy'
+				this.clientsMood[this.client] = 'Unhappy'
 				this.moodClass = 'meter_arrow_unhappy'
 			}
 		},
@@ -230,7 +285,11 @@ export default {
 					this.commentDialog = true
 				}, 250)
 				this.comment = this.selectedChoice.comment
-				this.selectedAnswers[this.client][this.questionNumber - 1] = this.selectedIndex
+				if (!this.selectedAnswers[this.client].hasOwnProperty(this.questionNumber - 1)) {
+					this.selectedAnswers[this.client][this.questionNumber - 1] = {}
+				}
+				this.selectedAnswers[this.client][this.questionNumber - 1].answer = this.selectedIndex
+				this.selectedAnswers[this.client][this.questionNumber - 1].impact = parseInt(this.selectedChoice.impact)
 				let marks = parseInt(this.selectedChoice.impact)
 				this.accummulatedPoints += marks
 				this.changeMood(marks)
@@ -256,7 +315,7 @@ export default {
 			if (
 				this.selectedAnswers[this.client].hasOwnProperty([this.questionNumber - 1])
 			) {
-				this.choiceSelected(this.selectedAnswers[this.client][this.questionNumber - 1])
+				this.choiceSelected(this.selectedAnswers[this.client][this.questionNumber - 1].answer)
 			}
 		},
 		loadNextQuestion () {
@@ -285,16 +344,53 @@ export default {
 						}
 					}, 100)
 				}
-				this.$store.state.mod1ClientsMood[this.client] = 'Interested'
+				this.clientsMood[this.client] = 'Interested'
 				this.nextQuestion = 0
+			} else if(this.nextQuestion === null) {
+				this.clientsStatus.clientC = 'done'
 			} else {
 				this.questionNumber++
 			}
+			
+			//save response into database
+			let overallMood = {}
+			if(this.clientsStatus.clientA === 'pending') {
+				overallMood = {}
+			} else if(this.clientsStatus.clientB === 'pending') {
+				overallMood = {
+					'clientA': this.clientsMood.clientA
+				}
+			} else if(this.clientsStatus.clientC === 'pending') {
+				overallMood = {
+					'clientA': this.clientsMood.clientA,
+					'clientB': this.clientsMood.clientB
+				}
+			} else {
+				overallMood = {
+					'clientA': this.clientsMood.clientA,
+					'clientB': this.clientsMood.clientB,
+					'clientC': this.clientsMood.clientC
+				}
+			}
+			// dont save if client is A and question number is 1
+			if(this.client !== 'clientA' || this.questionNumber != 1) {
+				let formData = new FormData()
+				formData.append('traineeID', this.$store.state.traineeId);
+				formData.append('sessionID', this.sessionID)
+				formData.append('answers', JSON.stringify(this.selectedAnswers))
+				formData.append('clientsMood', JSON.stringify(overallMood))
+				axios.post(backendServer + '/saveModule1Answers/', formData, {
+					headers: {
+						'Content-Type': 'multipart/form-data'
+					}
+				})
+			}
+			//end of saving response to database
 
 			if (this.nextQuestion === null) {
 				this.clientsStatus.clientC = 'done'
 				this.$store.state.moduleProgress.one.status = 'done'
-				this.questionNumber--
+				this.moduleCompleted = true
 				this.gameRunning = false
 				// this.prevQuestion = module1[this.client][this.nextQuestion].prevMove;
 			} else if (module1[this.client].hasOwnProperty(this.nextQuestion)) {
@@ -306,18 +402,29 @@ export default {
 
 			// if an answer exist then highligh the answer
 			if (this.selectedAnswers[this.client].hasOwnProperty([this.questionNumber - 1])) {
-				this.choiceSelected(this.selectedAnswers[this.client][this.questionNumber - 1])
+				this.choiceSelected(this.selectedAnswers[this.client][this.questionNumber - 1].answer)
 			}
 			for (let k in this.choices) {
 				k = parseInt(k)
-				if (this.$refs[k] === undefined || this.selectedAnswers[this.client][this.questionNumber - 1] === k) {
+				if (this.$refs[k] === undefined || 
+					(this.selectedAnswers[this.client].hasOwnProperty(this.questionNumber) && this.selectedAnswers[this.client][this.questionNumber - 1].answer === k)) {
 					continue
 				}
 				this.$refs[k][0].isActive = false
 			}
+		},
+		getImgUrl () {
+	    if (this.client === 'clientA') {
+				return require('../../assets/images/module1/' + this.clientsImg.clientA + '.jpg')
+			} else if (this.client === 'clientB') {
+				return require('../../assets/images/module1/' + this.clientsImg.clientB + '.jpg')
+			} else if (this.client === 'clientC') {
+				return require('../../assets/images/module1/' + this.clientsImg.clientC + '.jpg')
+			}
 		}
 	},
 	created: function () {
+		this.sessionID = uuid.v4()
 		this.loadNextQuestion()
 	}
 }
@@ -325,7 +432,7 @@ export default {
 
 <style scoped>
 #question {
-  padding: 20px 0px 20px;
+  padding: 0px 0px 20px;
 }
 #answer {
 	padding: 0px 70px;
@@ -356,6 +463,10 @@ export default {
 }
 .scroll {
   overflow-y: auto;
+}
+.clientImg {
+  width: 100;
+  height: 80;
 }
 .meter_box {
   position: relative;

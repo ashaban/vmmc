@@ -1,7 +1,11 @@
 {
   "server": {
     "hostname": "0.0.0.0",
-    "port": 3000
+    "port": 8081
+  },
+  "auth": {
+    "secret": "3084e343-71bc-4247-86e4-ea210af89c44",
+    "tokenDuration": 54000
   },
   "logger": {
     "level": "info"
