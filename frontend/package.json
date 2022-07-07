@@ -12,7 +12,7 @@
     "cli-plugin-eslint": "0.0.1",
     "eslint-plugin-html": "^4.0.6",
     "eslint-scope": "^4.0.0",
-    "moment": "^2.22.2",
+    "moment": "^2.29.4",
     "vue": "^2.5.17",
     "vue-eslint-parser": "^3.2.2",
     "vue-router": "^3.0.1",
